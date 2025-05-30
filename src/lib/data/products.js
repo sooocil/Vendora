@@ -6,9 +6,9 @@ export const products = [
     description: "Comfortable cotton t-shirt for everyday wear",
     longDescription:
       "Our Classic T-Shirt is made from 100% breathable cotton, ensuring comfort throughout the day. Designed for casual wear, it fits well on every body type.",
-    image: "https://shorturl.at/73D0A",
+    image: "https://i.pinimg.com/736x/c7/2a/e9/c72ae98a8f92965607ff518e2f860fb9.jpg",
     images: {
-      domains: ["https://shorturl.at/73D0A"],
+      domains: ["https://i.pinimg.com/736x/c7/2a/e9/c72ae98a8f92965607ff518e2f860fb9.jpg"],
     },
     price: 1900,
     sizes: ["S", "M", "L", "XL"],
@@ -88,8 +88,8 @@ export const products = [
     description: "Light floral dress for warm summer days",
     longDescription:
       "This floral tank top is ideal for summer. Lightweight and breathable, perfect for layering or wearing alone.",
-    image: "https://shorturl.at/eQmIl",
-    images: { domains: ["https://shorturl.at/eQmIl"] },
+    image: "https://i.pinimg.com/736x/df/c6/20/dfc62094ebb3e36d732f0cfba7a0a2a3.jpg",
+    images: { domains: ["https://i.pinimg.com/736x/df/c6/20/dfc62094ebb3e36d732f0cfba7a0a2a3.jpg"] },
     price: 1500,
     sizes: ["S", "M", "L"],
     colors: ["Blue", "White"],
@@ -141,8 +141,8 @@ export const products = [
     description: "Breathable shorts for sports and workouts",
     longDescription:
       "Made for movement, these Alo shorts feature moisture-wicking fabric and a lightweight design for performance training.",
-    image: "https://shorturl.at/MFJ12",
-    images: { domains: ["https://shorturl.at/MFJ12"] },
+    image: "https://i.pinimg.com/736x/39/54/0a/39540a88d4da6eb99e2ba7e7438e60ec.jpg",
+    images: { domains: ["i.pinimg.com"] },
     price: 1200,
     sizes: ["M", "L", "XL"],
     colors: ["Black", "Olive"],

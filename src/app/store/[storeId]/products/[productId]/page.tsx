@@ -146,7 +146,7 @@ export default function ProductPage() {
               />
             </div>
             <div className="flex gap-2 overflow-auto pb-2">
-              {product.images.map((image, index) => (
+              {Array.isArray(product.images) ? product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
@@ -161,7 +161,7 @@ export default function ProductPage() {
                     className="object-cover"
                   />
                 </button>
-              ))}
+              )) : null}
             </div>
           </div>
 
