@@ -1,8 +1,12 @@
 import React from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
+import { useStoreIdStore } from "@/stores/useStoreIdStore";
 
 const NavBar = () => {
+
+  const { stores } = useStoreIdStore();
+
   const Store = {
     logo: (
       <img
@@ -25,7 +29,7 @@ const NavBar = () => {
         hover:cursor-pointer text-bold text-2xl font-sans flex items-center gap-2"
         >
           {/* {Store.logo} */}
-          SPARK.
+          {stores[0].name}
         </li>
         <div className="flex gap-4 hover:cursor-pointer transition-all  ">
           <li className="min-w-[80px] text-center ">Category</li>

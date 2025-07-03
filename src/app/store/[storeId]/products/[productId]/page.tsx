@@ -93,6 +93,7 @@ export default function ProductPage() {
       </div>
     )
   }
+  const storeId = params.storeId as string
 
   return (
     <div className="min-h-screen bg-white">
@@ -100,7 +101,7 @@ export default function ProductPage() {
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-teal-600">
+            <Link href={`/store/${storeId}`} className="text-2xl font-bold text-teal-600">
               NepalCraft
             </Link>
             <div className="flex items-center space-x-4">
@@ -327,10 +328,10 @@ export default function ProductPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <div key={relatedProduct.id} className="group">
-                  <Link href={`/product/${relatedProduct.id}`} className="block">
+                  <Link href={`/store/${params.storeId}/products/${relatedProduct.id}`} className="block">
                     <div className="relative aspect-square overflow-hidden rounded-lg mb-3 bg-gray-100">
                       <Image
-                        src={relatedProduct.images[0] || "/placeholder.svg"}
+                        src={relatedProduct.images[0] || "/placeholder.png"}
                         alt={relatedProduct.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
