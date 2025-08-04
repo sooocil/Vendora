@@ -1,3 +1,5 @@
+'use server';
+
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
@@ -5,7 +7,6 @@ import { db } from '@/lib/auth/db'
 import { cookies } from 'next/headers'
 import { createSession } from '@/lib/auth/session'
 
-'use server'
 
 
 const loginSchema = z.object({
