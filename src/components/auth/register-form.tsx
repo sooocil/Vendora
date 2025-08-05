@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Mail, Lock, Store } from "lucide-react";
-import { Register } from "@/lib/actions/registerActions";
+import { register } from "@/lib/actions/registerActions";
 import { toast } from "sonner";
-import { useFormState } from "react-dom";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [state, formAction] = useFormState(Register, null);
+  const [state, formAction] = useActionState(register as any, { error: null, status: 0 });
+
 
   return (
     <form action={formAction} className="space-y-4">
