@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { login } from '@/app/(auth)/login/action'
+import { login } from '../../../lib/actions/loginActions'
 
 const LoginPage = () => {
   const router = useRouter()

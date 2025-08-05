@@ -4,6 +4,8 @@ import Link from "next/link"
 import { Store, ArrowLeft, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+
+
 export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-indigo-100 flex items-center justify-center p-4">
