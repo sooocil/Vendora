@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Mail, Lock, Store } from "lucide-react";
-import { register } from "@/lib/actions/registerActions";
+import { login } from "@/lib/actions/loginActions";
 import { toast } from "sonner";
 
-export function RegisterForm() {
+export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ export function RegisterForm() {
   return (
     <form
       action={async (formData) => {
-        await register(formData);
+        await login(formData);
       }}
       className="space-y-4"
     >
@@ -52,21 +52,7 @@ export function RegisterForm() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="businessName" className="text-sm font-medium">
-          Store Name (Optional)
-        </Label>
-        <div className="relative">
-          <Store className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input
-            id="storeName"
-            name="storeName"
-            type="text"
-            placeholder="Your store name"
-            className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-      </div>
+      
 
       <div className="space-y-2">
         <Label htmlFor="password" className="text-sm font-medium">
@@ -81,45 +67,27 @@ export function RegisterForm() {
               setPassword(e.target.value);
             }}
             type="password"
-            placeholder="Create a password"
+            placeholder="Enter your password"
             className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
             required
           />
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-sm font-medium">
-          Confirm Password
-        </Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
-            placeholder="Confirm your password"
-            className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
-            required
-          />
-        </div>
-      </div>
+      
 
       <Button
         type="submit"
-        className="w-full h-11 bg-indigo-600 hover:bg-indigo-700"
+        className="w-full hover:cursor-pointer h-11 bg-indigo-600 hover:bg-indigo-700"
         disabled={isLoading}
       >
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Creating account...
+            Logging in...
           </>
         ) : (
-          "Create Account"
+          "Login"
         )}
       </Button>
     </form>

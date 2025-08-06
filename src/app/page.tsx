@@ -32,27 +32,12 @@ import {
   Settings,
   Eye,
 } from "lucide-react";
+import HomeNav from "@/components/ui/homeNav";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-zinc-100">
-      <nav className="border-b border-gray-100">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <span className="text-3xl font-bold text-gray-900">Vendora.</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button asChild className="bg-indigo-600 hover:bg-indigo-700">
-                <Link href="/register">Get Started</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <HomeNav />
 
       <section className="py-16  bg-white">
         <div className="container mx-auto px-4 text-center">
@@ -102,7 +87,6 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
-            {/* Left Panel - Store Builder */}
             <div className="col-span-12 lg:col-span-3">
               <Card className="h-[600px] border-0 shadow-lg">
                 <div className="p-4 border-b border-gray-100">
@@ -114,7 +98,6 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                {/* Draggable Items */}
                 <div className="p-4 border-b border-gray-100">
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Elements
@@ -153,7 +136,6 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* Store Editor */}
                 <div className="p-4">
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Store Editor

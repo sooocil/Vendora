@@ -37,14 +37,14 @@ export default function RegisterPage() {
               {["14-day free trial", "No setup fees", "24/7 support", "Professional themes"].map((benefit) => (
                 <div key={benefit} className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-indigo-600 mr-3" />
-                  <span className="text-gray-700">{benefit}</span>
+                  <span className="text-zinc-700">{benefit}</span>
                 </div>
               ))}
             </div>
           </div>
 
           <div>
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-lg">
               <CardHeader className="pb-4">
                 <CardTitle className="text-center text-lg">Create Your Account</CardTitle>
               </CardHeader>
@@ -53,7 +53,7 @@ export default function RegisterPage() {
                 <div className="mt-6 text-center">
                   <p className="text-sm text-gray-600">
                     Already have an account?{" "}
-                    <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
+                    <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
                       Sign in
                     </Link>
                   </p>

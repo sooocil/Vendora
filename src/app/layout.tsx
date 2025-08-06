@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -29,9 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth `}
+        suppressHydrationWarning
       >
         {children}
       </body>

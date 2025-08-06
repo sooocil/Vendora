@@ -4,6 +4,10 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { login } from '../../../lib/actions/loginActions'
+import { LoginForm } from '@/components/auth/login-form'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, CheckCircle, Store } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const LoginPage = () => {
   const router = useRouter()
@@ -23,74 +27,65 @@ const LoginPage = () => {
     if (result?.error) {
       setErrors(result.error)
     } else if (result?.success) {
-      router.push('/dashboard') // Redirect to dashboard after successful login
+      router.push('/dashboard') 
     }
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
-            Sign in to your account
-          </h2>
+    <div className="min-h-screen bg-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl">
+        <div className="mb-6">
+          <Button variant="ghost" asChild className="text-gray-600 hover:text-gray-900">
+            <Link href="/" className="flex items-center">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Link>
+          </Button>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4 rounded-md shadow-sm">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2"
-              />
-              {errors?.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email[0]}</p>
-              )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center">
+                <Store className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-gray-900 ml-3">Vendora</span>
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2"
-              />
-              {errors?.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password[0]}</p>
-              )}
+
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Customize your online store</h1>
+            <p className="text-xl text-gray-600 mb-8">
+              .....................................................................
+            </p>
+
+            <div className="space-y-4">
+              {["14-day free trial", "No setup fees", "24/7 support", "Professional themes"].map((benefit) => (
+                <div key={benefit} className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-indigo-600 mr-3" />
+                  <span className="text-zinc-700">{benefit}</span>
+                </div>
+              ))}
             </div>
           </div>
-
-          {errors?.server && (
-            <div className="text-sm text-red-600">{errors.server[0]}</div>
-          )}
 
           <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-blue-300"
-            >
-              {isLoading ? 'Signing in...' : 'Sign in'}
-            </button>
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-center text-lg">Login with your Account</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LoginForm />
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-gray-600">
+                    Don't have an account?{" "}
+                    <Link href="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
+                      Register
+                    </Link>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </form>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
-            Sign up
-          </Link>
-        </p>
+        </div>
       </div>
     </div>
   )
