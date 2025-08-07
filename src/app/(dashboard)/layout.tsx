@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
 
   const userRole = "VENDOR" as "VENDOR" | "ADMIN" 
-  const vendorId = "vendor-1" 
+  const vendorId = "f2dax29s" 
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar userRole={userRole} vendorId={vendorId} />

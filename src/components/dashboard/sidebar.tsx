@@ -167,12 +167,12 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
                 className={cn(
                   "w-full justify-start h-10 px-3 ",
                   isActive &&
-                    "bg-indigo-300 text-black hover:bg-indigo-300 hover:cursor-pointer",
+                    "bg-indigo-600 text-white hover:bg-indigo-600 hover:cursor-pointer",
                   !isActive && "hover:bg-indigo-100",
                   collapsed && "px-0 justify-center hover:cursor-pointer"
                 )}
               >
-                <item.icon className={cn("h-4 w-4", !collapsed && "mr-3")} />
+                <item.icon className={cn("h-8 w-8", !collapsed && "mr-3")} />
                 {!collapsed && (
                   <>
                     <span className="flex-1 text-left">{item.title}</span>

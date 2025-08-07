@@ -14,6 +14,7 @@ import { Plus, Package, Edit, Trash2, Eye, Search } from "lucide-react";
 import { SwipablePopupSheet } from "@/components/ui/swipablePopupSheet";
 import { AddProductForm } from "@/components/forms/addProduct";
 import { Input } from "@/components/ui/input";
+import ViewProductDetail from "@/components/forms/viewProductDetail";
 
 interface Product {
   id: number;
@@ -30,10 +31,18 @@ interface ProductsClientProps {
 
 export function ProductsClient({ products }: ProductsClientProps) {
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [isViewProductOpen, setIsViewProductOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<number>(0);
 
   const handleAddProduct = (data: any) => {
     console.log("Adding product:", data);
     setIsAddProductOpen(false);
+  };
+
+  const handleViewProduct = (productId : number) => {
+    const id = productId;
+    setSelectedId(id);
+    setIsViewProductOpen(true);
   };
 
   return (
@@ -57,7 +66,7 @@ export function ProductsClient({ products }: ProductsClientProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Product Inventory</CardTitle>
-          <CardDescription>{products.length} products total</CardDescription>
+          <CardDescription>{products.length} products in total</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -72,16 +81,22 @@ export function ProductsClient({ products }: ProductsClientProps) {
                   </div>
                   <div>
                     <h3 className="font-medium">{product.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {product.sales} sold
-                    </p>
+                    <div className="flex gap-2   row-auto">
+                      <p className="text-sm text-zinc-600">
+                        {product.sales} sold
+                      </p>
+
+                      <p className="text-sm text-zinc-600">
+                        {product.stock} in stock
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
                     <p className="font-medium">{product.price}</p>
-                    <p className="text-sm text-gray-500">
-                      {product.stock} in stock
+                    <p className="text-sm text-zinc-600">
+                      Total : {product.sales + product.stock}
                     </p>
                   </div>
                   <Badge
@@ -96,7 +111,13 @@ export function ProductsClient({ products }: ProductsClientProps) {
                     {product.status}
                   </Badge>
                   <div className="flex space-x-2">
-                    <Button variant="ghost" size="sm">
+                    <Button
+                      onClick={(e) => {
+                        handleViewProduct(product.id);
+                      }}
+                      variant="ghost"
+                      size="sm"
+                    >
                       <Eye className="w-4 h-4" />
                     </Button>
                     <Button variant="ghost" size="sm">
@@ -123,6 +144,19 @@ export function ProductsClient({ products }: ProductsClientProps) {
         <AddProductForm
           onSubmit={handleAddProduct}
           onCancel={() => setIsAddProductOpen(false)}
+        />
+      </SwipablePopupSheet>
+
+      <SwipablePopupSheet
+        open={isViewProductOpen}
+        onOpenChange={setIsViewProductOpen}
+        title="View Product Details"
+      >
+        <ViewProductDetail
+          onSubmit={handleAddProduct}
+          onCancel={() => setIsAddProductOpen(false)}
+          products={products}
+          selectedidprops = {selectedId}
         />
       </SwipablePopupSheet>
     </>
