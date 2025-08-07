@@ -16,13 +16,14 @@ import {
   Plus,
 } from "lucide-react";
 
-interface VendorDashboardProps {
-  params: {
-    vendorId: string;
-  };
+
+interface PageProps {
+  params: Promise<{ vendorId: string }>; 
 }
 
-export default function VendorDashboard({ params }: VendorDashboardProps) {
+export default async function VendorDashboard({ params }: PageProps) {
+  const { vendorId } = await params; 
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
@@ -41,7 +42,7 @@ export default function VendorDashboard({ params }: VendorDashboardProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium ">Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -55,7 +56,7 @@ export default function VendorDashboard({ params }: VendorDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium ">Orders</CardTitle>
+            <CardTitle className="text-sm font-medium">Orders</CardTitle>
             <ShoppingCart className="h-4 w-4 text-zinc-600" />
           </CardHeader>
           <CardContent>
@@ -69,7 +70,7 @@ export default function VendorDashboard({ params }: VendorDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium ">Products</CardTitle>
+            <CardTitle className="text-sm font-medium">Products</CardTitle>
             <Package className="h-4 w-4 text-zinc-600" />
           </CardHeader>
           <CardContent>
@@ -82,7 +83,7 @@ export default function VendorDashboard({ params }: VendorDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium ">Customers</CardTitle>
+            <CardTitle className="text-sm font-medium">Customers</CardTitle>
             <Users className="h-4 w-4 text-zinc-600" />
           </CardHeader>
           <CardContent>
@@ -170,15 +171,14 @@ export default function VendorDashboard({ params }: VendorDashboardProps) {
           </CardContent>
         </Card>
       </div>
-      {/* random footer idea might change in future too*/}
+
       <Card className="mt-20">
         <CardHeader>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4 ">
-            <span className=" text-xl  mx-auto text-emerald-800">Here might goes tips for businesses</span>
+          <div className="space-y-4">
+            <span className="text-xl mx-auto text-emerald-800">Here might go tips for businesses</span>
             <h2 className="text-indigo-400 text-justify max-h-60 overflow-auto border-4 rounded-2xl px-8 py-10">
-            
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
               soluta nostrum voluptate sunt sit rem enim fuga placeat, molestiae
               ad qui aliquid, minus eius iusto quas et corporis aspernatur
