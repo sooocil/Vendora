@@ -105,7 +105,7 @@ export default function VendorOrders() {
                   </div>
                   <Badge
                     variant={
-                      order.status === "Delivered" ? "default" : order.status === "Shipped" ? "secondary" : "outline"
+                      order.status === "Delivered" ? "default" : order.status === "Shipped" ? "outline" : "outline"
                     }
                   >
                     {order.status}
