@@ -7,7 +7,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-//metadata put title of the page
 export const metadata: Metadata = {
   title: "Vendora",
   description: "Vendora - Your E-commerce Solution",
@@ -30,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth pt-16 ` }
         suppressHydrationWarning
       >
         {children}
