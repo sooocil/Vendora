@@ -12,7 +12,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-indigo-50 to-white">
+      <section className="pt-16 pb-0 bg-gradient-to-br from-indigo-50 to-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Simple, transparent pricing
@@ -47,10 +47,10 @@ export default function PricingPage() {
       {/* Pricing Plans */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+          <div className="flex flex-nowrap justify-center items-center gap-8 max-w-5xl mx-auto">
             <BasePlan />
-            <PlusPlan />
             <ProPlan />
+            <PlusPlan />
           </div>
         </div>
       </section>
@@ -66,7 +66,6 @@ export default function PricingPage() {
             <Accordion
               type="single"
               collapsible
-
               defaultValue="item-0"
               className="space-y-4 hover:cursor-pointer"
             >
@@ -92,7 +91,11 @@ export default function PricingPage() {
                     "We offer a 30-day money-back guarantee. If you're not satisfied, we'll refund your purchase.",
                 },
               ].map((faq, index) => (
-                <AccordionItem className="bg-indigo-100 p-2 px-6 rounded-2xl" key={index} value={`item-${index}`}>
+                <AccordionItem
+                  className="bg-indigo-50 p-2 px-6 rounded-2xl"
+                  key={index}
+                  value={`item-${index}`}
+                >
                   <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-indigo-600 hover:cursor-pointer ">
                     {faq.question}
                   </AccordionTrigger>

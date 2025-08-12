@@ -1,39 +1,75 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Mail, Lock, Store } from "lucide-react";
-import { register } from "@/lib/actions/registerActions";
-import { toast } from "sonner";
+import { Loader2, Mail, Lock, Store, User } from "lucide-react";
+import {registerVendor} from "@/lib/actions/registerActions";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  if (password !== confirmPassword){
-    console.log("Password didn't match!")
-    // setError("Password didn't match!")
-  }else{
-    console.log("Password Matched!")
-  }
+  const validateField = (name: string, value: string) => {
+    const newErrors: { [key: string]: string } = { ...errors };
+
+    
+
+    if (name === "email" && !value) {
+      newErrors.email = "Email is required";
+    } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
+      newErrors.email = "Invalid email format";
+    } else if (name === "email") {
+      delete newErrors.email;
+    }
+
+    if (name === "password" && !value) {
+      newErrors.password = "Password is required";
+    } else if (name === "password") {
+      delete newErrors.password;
+    }
+
+    if (name === "confirmPassword" && value !== password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    } else if (name === "confirmPassword") {
+      delete newErrors.confirmPassword;
+    }
+
+    setErrors(newErrors);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "password") {
+      setPassword(value);
+      validateField("confirmPassword", confirmPassword);
+    } else if (name === "confirmPassword") {
+      setConfirmPassword(value);
+    }
+
+    validateField(name, value);
+  };
+
+
 
   return (
-    <form
-      action={async (formData) => {
-        await register(formData);
-      }}
-      className="space-y-4"
-    >
-      {error && (
+    <form action={registerVendor} className="space-y-4">
+      {Object.keys(errors).length > 0 && (
         <Alert variant="destructive" className="border-red-200 bg-red-50">
-          <AlertDescription className="text-red-800">{error}</AlertDescription>
+          <AlertDescription className="text-red-800">
+            {Object.values(errors).map((error, index) => (
+              <div key={index}>{error}</div>
+            ))}
+          </AlertDescription>
         </Alert>
       )}
+
+      
 
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium">
@@ -46,7 +82,8 @@ export function RegisterForm() {
             name="email"
             type="email"
             placeholder="Enter your email"
-            className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`pl-10 h-11 ${errors.email ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -64,6 +101,7 @@ export function RegisterForm() {
             type="text"
             placeholder="Your store name"
             className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -77,12 +115,10 @@ export function RegisterForm() {
           <Input
             id="password"
             name="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
             type="password"
             placeholder="Create a password"
-            className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`pl-10 h-11 ${errors.password ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -98,11 +134,9 @@ export function RegisterForm() {
             id="confirmPassword"
             name="confirmPassword"
             type="password"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
             placeholder="Confirm your password"
-            className="pl-10 h-11 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`pl-10 h-11 ${errors.confirmPassword ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -111,7 +145,7 @@ export function RegisterForm() {
       <Button
         type="submit"
         className="w-full h-11 bg-indigo-600 hover:bg-indigo-700"
-        disabled={isLoading}
+        disabled={isLoading || Object.keys(errors).length > 0}
       >
         {isLoading ? (
           <>

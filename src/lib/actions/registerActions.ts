@@ -1,62 +1,69 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { z } from "zod";
-import { db } from "@/lib/auth/db";
-import { createSession } from "@/lib/auth/session";
-import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
+import { db } from "@/lib/auth/db";
+import { cookies } from "next/headers";
 
-type ActionState = {
-  error: string | null;
-  status: number;
-};
+type RegisterResult = 
+  | { success: true; user: { id: string; email: string; storeName?: string } }
+  | { success: false; error: string };
 
-export async function register( formData: FormData) {
-  const email = formData.get("email")?.toString().trim() || "";
-  const storeName = formData.get("storeName")?.toString().trim() || "";
-  const password = formData.get("password")?.toString().trim() || "";
-  const confirmPassword = formData.get("confirmPassword")?.toString().trim() || "";
-  if (password !== confirmPassword) {
-    return {
-      error: "Passwords do not match",
-      status: 400,
-    };
-  }
+export async function registerVendor(formData: FormData): Promise<void> {
+  const email = formData.get("email")?.toString() || "";
+  const storeName = formData.get("storeName")?.toString() || undefined;
+  const password = formData.get("password")?.toString() || "";
+  const confirmPassword = formData.get("confirmPassword")?.toString() || "";
 
-
+  // Validate with Zod
   const schema = z.object({
     email: z.string().email(),
-    storeName: z.string().min(1),
+    storeName: z.string().optional(),
     password: z.string().min(6),
+    confirmPassword: z.string(),
+  }).refine(data => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
-  const parsed = schema.safeParse({ email, storeName, password });
+  const parsed = schema.safeParse({ email, storeName, password, confirmPassword });
   if (!parsed.success) {
-    return {
-      error: parsed.error.issues.map((issue) => issue.message).join(", "),
-      status: 400,
-    };
+    throw new Error(parsed.error.issues.map(i => i.message).join(", "));
   }
 
-  const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
+  // Check if user exists
+  const existingUser = await db.user.findUnique({ where: { email } });
+  if (existingUser) {
+    throw new Error("Email already registered");
+  }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create user
   const user = await db.user.create({
     data: {
-      email: parsed.data.email,
-      storeName: parsed.data.storeName,
+      email,
+      username: email.split("@")[0],
+      storeName,
       password: hashedPassword,
+      isVerified: false,
+    },
+  });
+  const token = await db.session.create({
+    data: {
+      token: crypto.randomUUID(), 
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), 
     },
   });
 
-  const token = await createSession(user.id);
-
-  (await cookies()).set("session", JSON.stringify(token), {
+  (await cookies()).set("session", token.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 24 * 7, 
   });
 
-  // redirect("/dashboard/");
+  console.log("User registered successfully:", user);
 }

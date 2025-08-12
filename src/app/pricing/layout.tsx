@@ -16,7 +16,7 @@ export default function PricingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-gradient-to-t from-indigo-100 to-white min-h-screen flex flex-col">
+    <div className="bg-gradient-to-t from-indigo-100 to-white pt-16 min-h-screen flex flex-col">
       <HomeNav />
       {children}
     </div>

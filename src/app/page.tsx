@@ -36,7 +36,7 @@ import HomeNav from "@/components/home/homeNav";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-zinc-100">
+    <div className="min-h-screen bg-zinc-100 pt-16">
       <HomeNav />
 
       <section className="py-16  bg-white">

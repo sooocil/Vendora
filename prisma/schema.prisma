@@ -8,15 +8,48 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum SubscriptionPlan {
+  BASE
+  PLUS
+  PRO
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  storeName String
+  id            String  @id @default(cuid())
+  fullName      String?
+  username      String  @unique
+  email         String  @unique
+  panNo         String?
+  storeName     String?
+  citizenshipNo String?
+  location      String?
+  isVerified    Boolean @default(false)
+
+  //Vendor Payment Thing 
+  isPaid           Boolean           @default(false)
+  trialStart       DateTime?
+  trialEnd         DateTime?
+  subscriptionId   String?
+  subscriptionPlan SubscriptionPlan? @default(BASE)
+
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Session Session[]
+  Session      Session[]
+  Subscription Subscription[]
+}
+
+model Subscription {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  plan      SubscriptionPlan
+  status    String
+  startedAt DateTime         @default(now())
+  expiresAt DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
 model Session {
