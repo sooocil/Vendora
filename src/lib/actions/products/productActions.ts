@@ -6,15 +6,15 @@ import { db } from "@/lib/auth/db";
 export async function createProduct(formData: FormData): Promise<void> {
   try {
     const product = {
-      name: formData.get("name"),
-      description: formData.get("description"),
-      price: parseFloat(formData.get("price") as string),
-      stock: parseInt(formData.get("stock") as string, 10),
-      picture: formData.get("picture"),
-      pageno: parseInt(formData.get("pageno") as string, 10),
-      category: formData.get("category"),
-      colors: formData.getAll("colors"),
-      ratings: parseFloat(formData.get("ratings") as string),
+      name: String(formData.get("name") || ""),
+      description: String(formData.get("description") || ""),
+      price: parseFloat(formData.get("price") as string) || 0,
+      stock: parseInt(formData.get("stock") as string, 10) || 0,
+      picture: String(formData.get("picture") || ""),
+      pageno: parseInt(formData.get("pageno") as string, 10) || 0,
+      category: String(formData.get("category") || ""),
+      colors: formData.getAll("colors").map(color => String(color)),
+      ratings: parseFloat(formData.get("ratings") as string) || 0,
     };
 
     // prisma
