@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import HomeNav from "@/components/ui/homeNav";
+import HomeNav from "@/components/home/homeNav";
 
 export const metadata: Metadata = {
   title: "About Us",

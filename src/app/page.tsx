@@ -32,7 +32,7 @@ import {
   Settings,
   Eye,
 } from "lucide-react";
-import HomeNav from "@/components/ui/homeNav";
+import HomeNav from "@/components/home/homeNav";
 
 export default function HomePage() {
   return (

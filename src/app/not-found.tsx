@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Store, Home, ArrowLeft } from "lucide-react"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import HomeNav from "@/components/ui/homeNav"
+import HomeNav from "@/components/home/homeNav"
 
 export default function NotFound() {
   const [dots, setDots] = useState<{ x: number; y: number; left: number; top: number; delay: number }[]>([])
