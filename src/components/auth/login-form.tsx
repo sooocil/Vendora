@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Mail, Lock, Store } from "lucide-react";
-import { loginVendor } from "@/lib/actions/loginActions";
+import { loginVendor } from "@/lib/actions/auth/loginActions";
 import { toast } from "sonner";
 
 export function LoginForm() {

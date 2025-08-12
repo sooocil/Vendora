@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { login } from '../../../lib/actions/loginActions'
+import { login } from '../../../lib/actions/auth/loginActions'
 import { LoginForm } from '@/components/auth/login-form'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, CheckCircle, Store } from 'lucide-react'

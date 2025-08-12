@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Mail, Lock, Store, User } from "lucide-react";
-import {registerVendor} from "@/lib/actions/registerActions";
+import {registerVendor} from "@/lib/actions/auth/registerActions";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
