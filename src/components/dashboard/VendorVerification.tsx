@@ -34,7 +34,7 @@ export function VendorVerification({ vendorId }: VendorVerificationProps) {
   const isVerified = data?.data?.isVerified ?? false;
 
   return (
-    <div className="m-4">
+    <div className="mx-8 my-4">
       {isLoading ? (
         <Skeleton className="h-16 w-full rounded-md" />
       ) : (

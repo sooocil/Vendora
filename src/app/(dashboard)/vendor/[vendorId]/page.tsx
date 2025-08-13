@@ -28,7 +28,7 @@ export default async function VendorDashboard({ params }: PageProps) {
 
   return (
     <div className="p-6 space-y-6">
-      <VendorVerification vendorId={vendorId} />
+      {/* <VendorVerification vendorId={vendorId} /> */}
 
       <div className="flex items-center justify-between">
         <div>

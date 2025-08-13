@@ -23,7 +23,7 @@ export function VerificationBanner({ vendorId, isVerified, vendorName }: Verific
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className=" mb-12 relative"
+      className=" mb-8 relative"
     >
       <div className="bg-gradient-to-r from-indigo-50 to-red-100 border border-indigo-200 rounded-lg p-4 shadow-sm">
         <div className="flex items-start gap-3">
@@ -48,7 +48,7 @@ export function VerificationBanner({ vendorId, isVerified, vendorName }: Verific
                 </Button>
               </Link>
 
-              <Link href={`/(dashboard)/vendor/${vendorId}/help/verification`} className="text-xs text-indigo-600 hover:text-indigo-800 underline">
+              <Link href={`/vendor/${vendorId}/help/verification`} className="text-xs text-indigo-600 hover:text-indigo-800 underline">
                 Learn more
               </Link>
             </div>
