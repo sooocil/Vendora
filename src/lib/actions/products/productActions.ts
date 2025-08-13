@@ -17,7 +17,6 @@ export async function createProduct(formData: FormData): Promise<void> {
       ratings: parseFloat(formData.get("ratings") as string) || 0,
     };
 
-    // prisma
     await db.product.create({
       data: product,
     });

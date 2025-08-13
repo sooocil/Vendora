@@ -23,6 +23,7 @@ interface PageProps {
 
 export default async function VendorDashboard({ params }: PageProps) {
   const { vendorId } = await params; 
+  console.log("Vendor ID:", vendorId);
 
   return (
     <div className="p-6 space-y-6">
