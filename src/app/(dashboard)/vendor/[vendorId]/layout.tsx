@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/dashboard/sidebar";
 import { Toaster } from "sonner";
 import { VerificationBanner } from "@/components/dashboard/VerificationBanner";
 import { getVendorByVendorId } from "@/lib/actions/vendor/GetVendorByVendorId";
+import { VendorVerification } from "@/components/dashboard/VendorVerification";
 
 interface DashboardPageProps {
   params: Promise<{ vendorId: string }>;
@@ -36,7 +37,6 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar userRole={userRole} vendorId={vendorId} />
-      <VerificationBanner isVerified={isVerified} />
       <main className="flex-1 overflow-auto">{children}</main>
       <Toaster position="top-right" />
     </div>

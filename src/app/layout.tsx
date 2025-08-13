@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Headland_One } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/dashboard/QueryProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const headlandOne = Headland_One({
   subsets: ["latin"],
+  variable: "--font-headland-one",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -17,20 +18,15 @@ export const metadata: Metadata = {
   },
 };
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth `}
+        className={`${headlandOne.variable} antialiased scroll-smooth`}
         suppressHydrationWarning
       >
         <QueryProvider>{children}</QueryProvider>

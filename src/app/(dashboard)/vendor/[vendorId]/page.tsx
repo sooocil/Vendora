@@ -15,18 +15,21 @@ import {
   TrendingDown,
   Plus,
 } from "lucide-react";
-
+import { VerificationBanner } from "@/components/dashboard/VerificationBanner";
+import { VendorVerification } from "@/components/dashboard/VendorVerification";
 
 interface PageProps {
-  params: Promise<{ vendorId: string }>; 
+  params: Promise<{ vendorId: string }>;
 }
 
 export default async function VendorDashboard({ params }: PageProps) {
-  const { vendorId } = await params; 
+  const { vendorId } = await params;
   console.log("Vendor ID:", vendorId);
 
   return (
     <div className="p-6 space-y-6">
+      <VendorVerification vendorId={vendorId} />
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">Overview</h1>
@@ -174,11 +177,12 @@ export default async function VendorDashboard({ params }: PageProps) {
       </div>
 
       <Card className="mt-20">
-        <CardHeader>
-        </CardHeader>
+        <CardHeader></CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <span className="text-xl mx-auto text-emerald-800">Here might go tips for businesses</span>
+            <span className="text-xl mx-auto text-emerald-800">
+              Here might go tips for businesses
+            </span>
             <h2 className="text-indigo-400 text-justify max-h-60 overflow-auto border-4 rounded-2xl px-8 py-10">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
               soluta nostrum voluptate sunt sit rem enim fuga placeat, molestiae
