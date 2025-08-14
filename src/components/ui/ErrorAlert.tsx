@@ -1,7 +1,6 @@
 import React from "react";
 import { Alert, AlertDescription } from "./alert";
 
-
 interface ErrorProps {
   error: string;
 }
@@ -12,9 +11,9 @@ const ErrorAlert: React.FC<ErrorProps> = ({ error }) => {
       {" "}
       <Alert
         variant="destructive"
-        className="flex justify-center border-red-200 bg-red-50 shadow-md"
+        className="flex justify-center border-red-200 bg-red-50 shadow-lg"
       >
-        <AlertDescription className=" text-red-800">{error}</AlertDescription>
+        <AlertDescription className="  text-red-800">{error}</AlertDescription>
       </Alert>
     </div>
   );

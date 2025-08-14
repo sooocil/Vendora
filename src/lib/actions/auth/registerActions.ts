@@ -17,7 +17,6 @@ export async function registerVendor(formData: FormData): Promise<RegisterResult
   const password = formData.get("password")?.toString() || "";
   const confirmPassword = formData.get("confirmPassword")?.toString() || "";
 
-  // Validate with Zod
   const schema = z.object({
     email: z.string().email(),
     storeName: z.string().optional(),
@@ -30,18 +29,23 @@ export async function registerVendor(formData: FormData): Promise<RegisterResult
 
   const parsed = schema.safeParse({ email, storeName, password, confirmPassword });
   if (!parsed.success) {
-    throw new Error(parsed.error.issues.map(i => i.message).join(", "));
+    return { success: false, error: parsed.error.issues.map(i => i.message).join(", ") };
   }
 
-  // Check if user exists
   const existingUser = await db.user.findUnique({ where: { email } });
   if (existingUser) {
-    throw new Error("Email already registered");
+    return { success: false, error: "Email already registered" };
+  }
+
+  if (storeName) {
+    const existingStore = await db.user.findFirst({ where: { storeName } });
+    if (existingStore) {
+      return { success: false, error: "Store Name is not available" };
+    }
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create user
   const user = await db.user.create({
     data: {
       email,
@@ -51,11 +55,12 @@ export async function registerVendor(formData: FormData): Promise<RegisterResult
       isVerified: false,
     },
   });
+
   const token = await db.session.create({
     data: {
-      token: crypto.randomUUID(), 
+      token: crypto.randomUUID(),
       userId: user.id,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), 
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     },
   });
 
@@ -63,10 +68,8 @@ export async function registerVendor(formData: FormData): Promise<RegisterResult
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, 
+    maxAge: 60 * 60 * 24 * 7,
   });
-
-  console.log("User registered successfully:", user);
 
   return { success: true };
 }
