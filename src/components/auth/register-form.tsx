@@ -10,6 +10,7 @@ import ErrorAlert from "../ui/ErrorAlert";
 import z from "zod";
 import { StoreNameField } from "./StoreNameField";
 import SuccessAlert from "../ui/SuccessAlert";
+import RegistrationSuccessfull from "./RegistrationSuccessfull";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -144,12 +145,7 @@ export function RegisterForm() {
       {Object.keys(errors).length > 0 && (
         <ErrorAlert error={Object.values(errors).join(", ")} />
       )}
-      {success && (
-        <SuccessAlert
-          children={<div className="text-green-600">{success.message}</div>}
-          successMessage={success.message}
-        />
-      )}
+      {success && <RegistrationSuccessfull />}
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>

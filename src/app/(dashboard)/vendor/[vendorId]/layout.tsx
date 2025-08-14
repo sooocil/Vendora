@@ -37,7 +37,7 @@ export default async function DashboardLayout({
       <Sidebar userRole={userRole} vendorId={vendorId} />
 
       <main className="flex-1 overflow-auto">
-        <VendorVerification vendorId={vendorId} />
+        {/* <VendorVerification vendorId={vendorId} /> */}
 
         {children}
       </main>

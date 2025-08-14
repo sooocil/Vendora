@@ -4,20 +4,19 @@ import { Alert, AlertDescription } from "./alert";
 
 interface SuccessAlertProps {
   successMessage: string;
-  children: React.ReactNode;
 }
 
 
 
 
-const SuccessAlert: React.FC<SuccessAlertProps> = ({ successMessage, children }) => {
+const SuccessAlert: React.FC<SuccessAlertProps> = ({ successMessage }) => {
   return (
     <div>
       <Alert
         variant="destructive"
-        className="flex justify-center border-red-200 bg-red-50 shadow-md"
+        className="flex justify-center border-indigo-200 bg-indigo-50 shadow-md"
       >
-        <AlertDescription className=" text-red-800">{children}</AlertDescription>
+        <AlertDescription className=" text-indigo-600">{successMessage}</AlertDescription>
       </Alert>
     </div>
   );

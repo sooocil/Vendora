@@ -48,7 +48,7 @@ export function VerificationBanner({ vendorId, isVerified, vendorName }: Verific
                 </Button>
               </Link>
 
-              <Link href={`/vendor/${vendorId}/help/verification`} className="text-xs text-indigo-600 hover:text-indigo-800 underline">
+              <Link href={`/vendor/${vendorId}/help/`} className="text-xs text-indigo-600 hover:text-indigo-800 underline">
                 Learn more
               </Link>
             </div>
