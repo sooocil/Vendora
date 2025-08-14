@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Mail, Lock, Store } from "lucide-react";
-import { loginVendor } from "@/lib/actions/auth/loginActions";
+import { login } from "@/lib/actions/auth/loginActions";
 import { toast } from "sonner";
+import ErrorAlert from "../ui/ErrorAlert";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,17 +17,31 @@ export function LoginForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    event.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      const result = await login(formData);
+
+      if (!result.success) {
+        setError(result.error || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
-    <form
-      action={loginVendor}
-      className="space-y-4"
-    >
-      {error && (
-        <Alert variant="destructive" className="border-red-200 bg-red-50">
-          <AlertDescription className="text-red-800">{error}</AlertDescription>
-        </Alert>
-      )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && <ErrorAlert error={error} />}
 
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium">
@@ -44,8 +59,6 @@ export function LoginForm() {
           />
         </div>
       </div>
-
-      
 
       <div className="space-y-2">
         <Label htmlFor="password" className="text-sm font-medium">
@@ -66,8 +79,6 @@ export function LoginForm() {
           />
         </div>
       </div>
-
-      
 
       <Button
         type="submit"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Headland_One } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/dashboard/QueryProvider";
+import { Toaster } from "sonner";
 
 const headlandOne = Headland_One({
   subsets: ["latin"],
@@ -29,7 +30,18 @@ export default function RootLayout({
         className={`${headlandOne.variable} antialiased scroll-smooth`}
         suppressHydrationWarning
       >
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Toaster
+            richColors
+            position="top-center"
+            toastOptions={{
+              duration: 3000,
+              className: "text-gray-800 dark:text-white",
+            }}
+          />
+
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

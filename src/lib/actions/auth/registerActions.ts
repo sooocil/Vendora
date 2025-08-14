@@ -1,16 +1,17 @@
 "use server";
 
-import { z } from "zod";
+import { string, z } from "zod";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { db } from "@/lib/auth/db";
 import { cookies } from "next/headers";
 
-type RegisterResult = 
-  | { success: true; user: { id: string; email: string; storeName?: string } }
-  | { success: false; error: string };
+interface RegisterResult {
+  success: boolean;
+  error?: string;
+}
 
-export async function registerVendor(formData: FormData): Promise<void> {
+export async function registerVendor(formData: FormData): Promise<RegisterResult> {
   const email = formData.get("email")?.toString() || "";
   const storeName = formData.get("storeName")?.toString() || undefined;
   const password = formData.get("password")?.toString() || "";
@@ -66,4 +67,6 @@ export async function registerVendor(formData: FormData): Promise<void> {
   });
 
   console.log("User registered successfully:", user);
+
+  return { success: true };
 }

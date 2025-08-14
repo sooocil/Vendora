@@ -4,20 +4,19 @@ import { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Mail, Lock, Store, User } from "lucide-react";
-import {registerVendor} from "@/lib/actions/auth/registerActions";
+import { Loader2, Mail, Lock, Store } from "lucide-react";
+import { registerVendor } from "@/lib/actions/auth/registerActions";
+import ErrorAlert from "../ui/ErrorAlert";
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string } | null>(null);
+  const [success, setSuccess] = useState<{ [key: string]: string } | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const validateField = (name: string, value: string) => {
-    const newErrors: { [key: string]: string } = { ...errors };
-
-    
+    const newErrors: { [key: string]: string } = { ...(errors || {}) };
 
     if (name === "email" && !value) {
       newErrors.email = "Email is required";
@@ -55,26 +54,37 @@ export function RegisterForm() {
     validateField(name, value);
   };
 
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setErrors({});
+    setSuccess(null);
 
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const result = await registerVendor(formData);
+
+      if (result.success) {
+        setSuccess({ message: "Registration successful!" });
+      } else {
+        setErrors({ email: result.error || "Registration failed" });
+      }
+    } catch (error) {
+      setErrors({ email: error instanceof Error ? error.message : "An unexpected error occurred." });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <form action={registerVendor} className="space-y-4">
-      {Object.keys(errors).length > 0 && (
-        <Alert variant="destructive" className="border-red-200 bg-red-50">
-          <AlertDescription className="text-red-800">
-            {Object.values(errors).map((error, index) => (
-              <div key={index}>{error}</div>
-            ))}
-          </AlertDescription>
-        </Alert>
+    <form onSubmit={handleRegister} className="space-y-4">
+      {errors && Object.keys(errors).length > 0 && (
+        <ErrorAlert error={Object.values(errors).join(", ")} />
       )}
 
-      
-
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-medium">
-          Email
-        </Label>
+        <Label htmlFor="email" className="text-sm font-medium">Email</Label>
         <div className="relative">
           <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -82,7 +92,7 @@ export function RegisterForm() {
             name="email"
             type="email"
             placeholder="Enter your email"
-            className={`pl-10 h-11 ${errors.email ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            className={`pl-10 h-11 ${errors?.email ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
             onChange={handleInputChange}
             required
           />
@@ -90,9 +100,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="businessName" className="text-sm font-medium">
-          Store Name (Optional)
-        </Label>
+        <Label htmlFor="storeName" className="text-sm font-medium">Store Name (Optional)</Label>
         <div className="relative">
           <Store className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -107,9 +115,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-medium">
-          Password
-        </Label>
+        <Label htmlFor="password" className="text-sm font-medium">Password</Label>
         <div className="relative">
           <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -117,7 +123,7 @@ export function RegisterForm() {
             name="password"
             type="password"
             placeholder="Create a password"
-            className={`pl-10 h-11 ${errors.password ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            className={`pl-10 h-11 ${errors?.password ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
             onChange={handleInputChange}
             required
           />
@@ -125,9 +131,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-sm font-medium">
-          Confirm Password
-        </Label>
+        <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
         <div className="relative">
           <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -135,7 +139,7 @@ export function RegisterForm() {
             name="confirmPassword"
             type="password"
             placeholder="Confirm your password"
-            className={`pl-10 h-11 ${errors.confirmPassword ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
+            className={`pl-10 h-11 ${errors?.confirmPassword ? "border-red-500" : "focus:ring-indigo-500 focus:border-indigo-500"}`}
             onChange={handleInputChange}
             required
           />
@@ -145,16 +149,14 @@ export function RegisterForm() {
       <Button
         type="submit"
         className="w-full h-11 bg-indigo-600 hover:bg-indigo-700"
-        disabled={isLoading || Object.keys(errors).length > 0}
+        disabled={isLoading || (errors ? Object.keys(errors).length > 0 : false)}
       >
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Creating account...
           </>
-        ) : (
-          "Create Account"
-        )}
+        ) : "Create Account"}
       </Button>
     </form>
   );

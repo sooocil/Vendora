@@ -7,7 +7,14 @@ import { createSession } from "@/lib/auth/session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function loginVendor(formData: FormData): Promise<void> {
+interface LoginResult {
+  success: boolean;
+  error?: string;
+}
+
+export async function login(
+  formData: FormData
+): Promise<LoginResult> {
   const email = formData.get("email")?.toString() || "";
   const password = formData.get("password")?.toString() || "";
 
@@ -17,30 +24,34 @@ export async function loginVendor(formData: FormData): Promise<void> {
   });
 
   const parsed = schema.safeParse({ email, password });
+
   if (!parsed.success) {
-    throw new Error(parsed.error.issues.map(i => i.message).join(", "));
+    return {
+      success: false,
+      error: "Enter Valid Email and Password",
+    };
   }
 
   const user = await db.user.findUnique({ where: { email } });
-  if (!user) {
-    throw new Error("Invalid email or password");
-  }
+
+  if (!user) return { success: false, error: "Invalid Email or Password" };
 
   const passwordMatches = await bcrypt.compare(password, user.password);
   if (!passwordMatches) {
-    throw new Error("Invalid email or password");
+    return { success: false, error: "Invalid Email or Password" };
   }
 
   const token = await createSession(user.id);
+
   if (!token) {
-    throw new Error("Failed to create session");
+    return { success: false, error: "Failed to create session" };
   }
 
   (await cookies()).set("session", token.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   redirect(`/vendor/${user.id}`);
