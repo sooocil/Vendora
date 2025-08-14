@@ -33,21 +33,42 @@ import {
   Eye,
 } from "lucide-react";
 import HomeNav from "@/components/home/homeNav";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-zinc-100 pt-16">
       <HomeNav />
+      <div className="bg-indigo-100 border-b  border-indigo-200 py-2">
+        <div className="container mx-auto px-4">
+          <p
+            className={`text-center text-sm text-indigo-800 ${roboto.className}`}
+          >
+            The website is in production. Certain features are still being
+            finalized.
+          </p>
+        </div>
+      </div>
 
       <section className="py-16  bg-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6 max-w-4xl mx-auto  leading-tight">
+          <div className="text-5xl font-bold text-gray-900 mb-6 max-w-4xl mx-auto  leading-tight">
             <div className="w-16 h-16 mx-auto bg-indigo-600 rounded-lg flex items-center justify-center">
               <Store className="h-10 w-10 text-white" />
             </div>
-            Build your online store without code
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <h1 className={`text-7xl font-bold text-indigo-600 mb-6 max-w-4xl mx-auto  leading-tight ${roboto.className}`}>
+              Vendora.
+            </h1>
+            <h1 className={`text-4xl font-bold text-zinc-600 mb-6 max-w-4xl mx-auto  leading-tight ${roboto.className}`}>
+              Build your online store without code
+            </h1>
+          </div>
+          <p className={`text-xl text-gray-600 mb-8 max-w-2xl mx-auto ${roboto.className}`}>
             Create, customize, and launch your e-commerce store in minutes. No
             technical skills required.
           </p>
