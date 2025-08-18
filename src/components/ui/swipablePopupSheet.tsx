@@ -142,7 +142,7 @@ export function SwipablePopupSheet({
               'rounded-2xl shadow-2xl',
               'flex flex-col',
               'max-w-lg mx-auto',
-              'will-change-transform', // This helps make animations smoother
+              'will-change-transform',
               className
             )}
             onClick={(e) => e.stopPropagation()}

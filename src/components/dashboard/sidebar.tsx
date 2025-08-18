@@ -22,6 +22,7 @@ import {
   Shield,
   Database,
 } from "lucide-react";
+import SignoutConfirm from "./SignoutConfirm";
 
 interface SidebarProps {
   userRole: "VENDOR" | "ADMIN";
@@ -30,6 +31,7 @@ interface SidebarProps {
 
 export function Sidebar({ userRole, vendorId }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [signoutModal, setSignoutModal] = useState(false);
   const pathname = usePathname();
 
   const vendorNavItems = [
@@ -127,7 +129,7 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
   return (
     <div
       className={cn(
-        "flex flex-col h-screen bg-white border-r border-gray-100 transition-all duration-300",
+        "flex flex-col h-screen bg-indigo-50 border-r border-zinc-300 transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >
@@ -193,7 +195,9 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
       </nav>
 
       <div className="p-4 border-t border-gray-100 space-y-1">
-        <Link href="/help">
+        {
+          
+          <Link href={`/vendor/${vendorId}/help/`}>
           {/* instead of making help as differnet route "/help" there will be popup component in where
            user can take quick tour and can contact me/developer as well for better ui/ux  */}
           <Button
@@ -201,14 +205,19 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
             className={cn(
               "w-full justify-start h-10 px-3",
               collapsed && "px-0 justify-center"
+              
+              
             )}
           >
             <HelpCircle className={cn("h-4 w-4", !collapsed && "mr-3")} />
             {!collapsed && "Help & Support"}
           </Button>
-        </Link>
+        </Link>}
         <Button
           variant="ghost"
+          onClick={() => {
+            setSignoutModal(!signoutModal);
+          }}
           className={cn(
             "w-full justify-start h-10 px-3 text-red-600 hover:text-red-700 hover:bg-red-50",
             collapsed && "px-0 justify-center"
@@ -218,6 +227,7 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
           {!collapsed && "Sign Out"}
         </Button>
       </div>
+      {signoutModal && <SignoutConfirm open={signoutModal} />}
     </div>
   );
 }
