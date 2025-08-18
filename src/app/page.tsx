@@ -46,14 +46,15 @@ const roboto = Roboto({
   weight: ["400", "700"],
 });
 
-export default function HomePage({
+export default async function HomePage({
   searchParams,
 }: {
-  searchParams?: { token?: string };
+  searchParams?: Promise<{ token?: string }>;
 }) {
+  const resolvedSearchParams = await searchParams;
 
-  if (searchParams?.token) {
-    verifyEmailAction(searchParams.token);
+  if (resolvedSearchParams?.token) {
+    verifyEmailAction(resolvedSearchParams.token);
   }
 
   return (
