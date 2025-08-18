@@ -24,15 +24,21 @@ import {
 } from "lucide-react";
 import SignoutConfirm from "./SignoutConfirm";
 
+
 interface SidebarProps {
   userRole: "VENDOR" | "ADMIN";
   vendorId?: string;
 }
 
 export function Sidebar({ userRole, vendorId }: SidebarProps) {
+  
   const [collapsed, setCollapsed] = useState(false);
   const [signoutModal, setSignoutModal] = useState(false);
   const pathname = usePathname();
+
+
+  
+
 
   const vendorNavItems = [
     {

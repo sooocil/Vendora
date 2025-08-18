@@ -47,7 +47,7 @@ export async function login(
     return { success: false, error: "Failed to create session" };
   }
 
-  (await cookies()).set("session", token.id, {
+  (await cookies()).set("vendor_session", token.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

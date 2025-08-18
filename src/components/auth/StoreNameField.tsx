@@ -14,7 +14,7 @@ export function StoreNameField({
   setError: (msg: string | null) => void;
 }) {
   const [availability, setAvailability] = useState<'available' | 'unavailable' | 'checking' | null>(null);
-  const currentValue = useRef(value); // track latest value
+  const currentValue = useRef(value); 
 
   useEffect(() => {
     currentValue.current = value;
@@ -42,7 +42,7 @@ export function StoreNameField({
     }, 500);
 
     return () => clearTimeout(handler);
-  }, [value]); // removed setError from deps to prevent loop
+  }, [value]); 
 
   return (
     <div className="space-y-2">
@@ -61,9 +61,9 @@ export function StoreNameField({
           onChange={handleInputChange}
         />
         <div className="absolute right-3 top-3">
-          {availability === 'checking' && <Loader2 className="animate-spin h-4 w-4 text-gray-400" />}
-          {availability === 'available' && <Check className="h-4 w-4 text-green-500" />}
-          {availability === 'unavailable' && <X className="h-4 w-4 text-red-500" />}
+          {availability === 'checking' && <Loader2 className="animate-spin h-6 w-6 text-gray-400" />}
+          {availability === 'available' && <Check className="h-6 w-6 p-1 mx-auto bg-green-400 text-white rounded-2xl" size={32}/>}
+          {availability === 'unavailable' && <X className="h-6 w-6 text-red-500" />}
         </div>
       </div>
     </div>

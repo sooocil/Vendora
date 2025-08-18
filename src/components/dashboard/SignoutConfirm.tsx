@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import React, { useState } from "react";
+import { Card, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
-import { fa } from "zod/v4/locales";
 import { CheckCircle } from "lucide-react";
+import { signOutVendor } from "@/lib/actions/vendor/signoutAction";
+import { useRouter } from "next/navigation";
 
 interface SignoutConfirmProps {
   open: boolean;
 }
 
-export function SignoutConfirm({ open }: SignoutConfirmProps) {
-  const [signout, setSignout] = useState(false);
+export default function SignoutConfirm({ open }: SignoutConfirmProps) {
   const [modalState, setModalState] = useState(open);
+  const router = useRouter();
 
-  const handleCancel = () => {
-    setModalState(false);
-  };
-
-  const handleSignout = () => {
-    console.log(" Signout clicked !");
+  const handleSignout = async () => {
+    const res = await signOutVendor();
+    if (res.success) {
+      router.push("/");
+    }
   };
 
   return (
@@ -57,5 +57,3 @@ export function SignoutConfirm({ open }: SignoutConfirmProps) {
     </>
   );
 }
-
-export default SignoutConfirm;

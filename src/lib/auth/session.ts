@@ -12,7 +12,7 @@ export async function createSession(userId: string): Promise<{ id: string }> {
     expiresIn: '7d',
   });
 
-  await (await cookies()).set('session', token, {
+  await (await cookies()).set('vendor_session', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -38,5 +38,5 @@ export async function getSession(): Promise<{ userId: string } | null> {
 }
 
 export async function destroySession(): Promise<void> {
-  await (await cookies()).delete('session');
+  await (await cookies()).delete('vendor_session');
 }

@@ -15,15 +15,16 @@ enum SubscriptionPlan {
 }
 
 model User {
-  id            String  @id @default(cuid())
-  fullName      String?
-  username      String  @unique
-  email         String  @unique
-  panNo         String?
-  storeName     String?
-  citizenshipNo String?
-  location      String?
-  isVerified    Boolean @default(false)
+  id              String  @id @default(cuid())
+  fullName        String?
+  username        String  @unique
+  email           String  @unique
+  panNo           String?
+  storeName       String?
+  citizenshipNo   String?
+  location        String?
+  isEmailVerified Boolean @default(false)
+  isVerified      Boolean @default(false)
 
   //Vendor Payment Thing 
   isPaid           Boolean           @default(false)
@@ -36,8 +37,20 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Session      Session[]
-  Subscription Subscription[]
+  Session           Session[]
+  Subscription      Subscription[]
+  RegistrationEmail RegistrationEmail[]
+}
+
+model RegistrationEmail {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  email     String
+  storeName String?
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model Subscription {
