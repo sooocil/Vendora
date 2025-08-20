@@ -25,6 +25,7 @@ model User {
   location        String?
   isEmailVerified Boolean @default(false)
   isVerified      Boolean @default(false)
+  profileImage    String?
 
   //Vendor Payment Thing 
   isPaid           Boolean           @default(false)

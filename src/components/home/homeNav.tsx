@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Ghost, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import HomeNavProfileDropdown from "./ProfileDropdown";
 
 export default function HomeNav() {
   return (
@@ -35,15 +36,7 @@ export default function HomeNav() {
 
             {/* Right buttons */}
             <div className="flex items-center space-x-4 flex-1 justify-end">
-              <Button variant="ghost" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-gradient-to-r from-indigo-600 to-purple-600"
-              >
-                <Link href="/register">Get Started</Link>
-              </Button>
+              <HomeNavProfileDropdown />
             </div>
           </div>
         </div>

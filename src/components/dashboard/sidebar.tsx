@@ -21,6 +21,7 @@ import {
   ChevronLeft,
   Shield,
   Database,
+  User,
 } from "lucide-react";
 import SignoutConfirm from "./SignoutConfirm";
 
@@ -35,9 +36,6 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [signoutModal, setSignoutModal] = useState(false);
   const pathname = usePathname();
-
-
-  
 
 
   const vendorNavItems = [
@@ -83,6 +81,11 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
       href: `/vendor/${vendorId}/settings`,
       icon: Settings,
     },
+    //  {
+    //   title: "Profile",
+    //   href: `/vendor/${vendorId}/profile`,
+    //   icon: User,
+    // },
   ];
 
   const adminNavItems = [
