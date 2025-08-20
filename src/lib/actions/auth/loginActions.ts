@@ -4,8 +4,11 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import { db } from "@/lib/auth/db";
 import { createSession } from "@/lib/auth/session";
+import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { sendVerificationEmail } from "./EmailVerification";
+import { createAndSendVerification } from "./LoginEmailVerification";
 
 interface LoginResult {
   success: boolean;
@@ -36,6 +39,12 @@ export async function login(
 
   if (!user) return { success: false, error: "Invalid Email or Password" };
 
+
+  if (!user.isEmailVerified) {
+    await createAndSendVerification(user.id, user.email);
+    return { success: false, error: "Email not verified, please verify your email address" };
+  }
+
   const passwordMatches = await bcrypt.compare(password, user.password);
   if (!passwordMatches) {
     return { success: false, error: "Invalid Email or Password" };
@@ -46,13 +55,15 @@ export async function login(
   if (!token) {
     return { success: false, error: "Failed to create session" };
   }
-
+  
   (await cookies()).set("vendor_session", token.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7,
   });
+
+    
 
   redirect(`/vendor/${user.id}`);
 }

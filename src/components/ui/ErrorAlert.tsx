@@ -4,7 +4,7 @@ import { Alert, AlertDescription } from "./alert";
 interface ErrorProps {
   error: string;
 }
-
+ 
 const ErrorAlert: React.FC<ErrorProps> = ({ error }) => {
   return (
     <div>

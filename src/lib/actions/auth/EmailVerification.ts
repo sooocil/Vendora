@@ -11,6 +11,7 @@ export async function generateVerificationToken(userId: string) {
   return randomUUID();
 }
 
+
 export async function sendVerificationEmail(email: string, token: string) {
   try {
     const verificationLink = `http://localhost:3000/?token=${token}`;

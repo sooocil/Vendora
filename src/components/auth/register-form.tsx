@@ -9,7 +9,6 @@ import { registerVendor } from "@/lib/actions/auth/registerActions";
 import ErrorAlert from "../ui/ErrorAlert";
 import z from "zod";
 import { StoreNameField } from "./StoreNameField";
-import SuccessAlert from "../ui/SuccessAlert";
 import RegistrationSuccessfull from "./RegistrationSuccessfull";
 
 export function RegisterForm() {

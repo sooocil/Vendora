@@ -7,13 +7,13 @@ interface SuccessAlertProps {
 }
 
 
-
+ 
 
 const SuccessAlert: React.FC<SuccessAlertProps> = ({ successMessage }) => {
   return (
     <div>
       <Alert
-        variant="destructive"
+        variant="default"
         className="flex justify-center border-indigo-200 bg-indigo-50 shadow-md"
       >
         <AlertDescription className=" text-indigo-600">{successMessage}</AlertDescription>
