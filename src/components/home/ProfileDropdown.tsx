@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { vendor as VendorType } from "@/types/types";
-import { getVendorProfile } from "@/lib/actions/vendor/getVendorProfile"; 
+import { getVendorProfile } from "@/lib/actions/vendor/getVendorProfile";
+import { signOutVendor } from "@/lib/actions/vendor/signoutAction";
 
 export default function HomeNavProfileDropdown() {
   const [vendor, setVendor] = useState<VendorType | null>(null);
@@ -25,10 +26,8 @@ export default function HomeNavProfileDropdown() {
     async function fetchVendorData() {
       try {
         const vendorData = await getVendorProfile();
-        setVendor(vendorData);
-        if(vendorData && !vendorData.id) {
-          await setVendorId(vendorData.id);
-        }
+        setVendor(vendorData.data || null);
+        setVendorId(vendorData.data?.id || null);
       } catch (error) {
         console.error("Failed to fetch vendor session:", error);
       } finally {
@@ -38,16 +37,23 @@ export default function HomeNavProfileDropdown() {
     fetchVendorData();
   }, []);
 
-
+  function handleSignout() {
+    signOutVendor();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   if (loading) {
-    return <>
-    <div className="animate-pulse flex space-x-4">
-      <div className="flex-1 py-1">
-        <div className="h-4 bg-gray-200 rounded"></div>
-      </div>
-    </div>
-    </>;
+    return (
+      <>
+        <div className="animate-pulse flex space-x-4">
+          <div className="flex-1 py-1">
+            <div className="h-4 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (!vendor) {
@@ -96,11 +102,13 @@ export default function HomeNavProfileDropdown() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <form action="/api/logout" method="post">
-            <button type="submit" className="w-full text-left">
-              Logout
-            </button>
-          </form>
+          <Button
+            onClick={handleSignout}
+            type="submit"
+            className="bg-red-500 w-full text-left"
+          >
+            Signout
+          </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

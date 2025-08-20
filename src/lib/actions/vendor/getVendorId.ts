@@ -1,7 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
-import { getSessionById } from "@/lib/auth/session"
+import { getSession } from "@/lib/auth/session"
 
 export async function getVendorId(): Promise<string | null> {
   const cookieStore = cookies()
@@ -9,7 +9,7 @@ export async function getVendorId(): Promise<string | null> {
 
   if (!sessionId) return null
 
-  const session = await getSessionById(sessionId)
+  const session = await getSession()
   if (!session) return null
 
   return session.userId;

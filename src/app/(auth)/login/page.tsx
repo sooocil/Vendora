@@ -32,8 +32,8 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
+    <div className="min-h-screen  bg-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl ">
         <div className="mb-6">
           <Button variant="ghost" asChild className="text-gray-600 hover:text-gray-900">
             <Link href="/" className="flex items-center">
@@ -43,7 +43,7 @@ const LoginPage = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1  lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="flex items-center mb-6">
               <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center">
@@ -52,9 +52,9 @@ const LoginPage = () => {
               <span className="text-2xl font-bold text-gray-900 ml-3">Vendora</span>
             </div>
 
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Customize your online store</h1>
-            <p className="text-xl text-gray-600 mb-8">
-              .....................................................................
+            <h1 className="text-4xl font-bold flex-wrap text-balance text-gray-900 mb-4">Customize your online store</h1>
+            <p className="flex-wrap text-balance text-xl text-gray-600 mb-8">
+              Create a unique shopping experience with our powerful tools.
             </p>
 
             <div className="space-y-4">
@@ -68,7 +68,7 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-lg max-h-[600px]">
               <CardHeader className="pb-4">
                 <CardTitle className="text-center text-lg">Login with your Account</CardTitle>
               </CardHeader>

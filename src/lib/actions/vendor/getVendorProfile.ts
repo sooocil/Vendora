@@ -4,12 +4,31 @@ import { getSession } from "@/lib/auth/session";
 import { getVendorByVendorId } from "@/lib/actions/vendor/GetVendorByVendorId";
 import { vendor as VendorType } from "@/types/types";
 
-export async function getVendorProfile(): Promise<VendorType | null> {
+interface VendorProfileResult {
+  success: boolean;
+  data?: VendorType;
+  error?: string;
+}
+
+export async function getVendorProfile(): Promise<VendorProfileResult> {
   const session = await getSession();
   if (!session || !session.userId) {
-    return null;
+    return {
+      success: false,
+      error: "Unauthorized"
+    };
   }
   
   const result = await getVendorByVendorId(session.userId);
-  return result.data;
+  if (!result.data) {
+    return {
+      success: false,
+      error: "Vendor not found"
+    };
+  }
+
+  return {
+    success: true,
+    data: result.data
+  };
 }
