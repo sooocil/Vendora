@@ -236,7 +236,7 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
           {!collapsed && "Sign Out"}
         </Button>
       </div>
-      {signoutModal && <SignoutConfirm open={signoutModal} />}
+      {signoutModal && <SignoutConfirm open={signoutModal} onOpenChange={setSignoutModal} />}
     </div>
   );
 }
