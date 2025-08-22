@@ -24,7 +24,11 @@ import {
   User,
 } from "lucide-react";
 import SignoutConfirm from "./SignoutConfirm";
-
+import { SideBarFooter } from "./SidebarFooter";
+import { useQuery } from "@tanstack/react-query";
+import { getVendorByVendorId } from "@/lib/actions/vendor/GetVendorByVendorId";
+import { vendor } from "@/types/types";
+import { Skeleton } from "../ui/skeleton";
 
 interface SidebarProps {
   userRole: "VENDOR" | "ADMIN";
@@ -32,11 +36,18 @@ interface SidebarProps {
 }
 
 export function Sidebar({ userRole, vendorId }: SidebarProps) {
-  
   const [collapsed, setCollapsed] = useState(false);
   const [signoutModal, setSignoutModal] = useState(false);
   const pathname = usePathname();
 
+  const { data: vendorData, isLoading } = useQuery({
+    queryKey: ["vendor", vendorId],
+    queryFn: () => getVendorByVendorId(vendorId!),
+    enabled: !!vendorId,
+    select: (res) => res.data as vendor,
+    staleTime: 1000 * 60 * 30,
+    placeholderData: (previousData) => previousData,
+  });
 
   const vendorNavItems = [
     {
@@ -81,11 +92,6 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
       href: `/vendor/${vendorId}/settings`,
       icon: Settings,
     },
-    //  {
-    //   title: "Profile",
-    //   href: `/vendor/${vendorId}/profile`,
-    //   icon: User,
-    // },
   ];
 
   const adminNavItems = [
@@ -149,7 +155,15 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
               <Store className="w-4 h-4 text-white" />
             </div>
             <span className="select-none font-semibold text-gray-900">
-              Vendora.
+              {isLoading ? ( 
+                <span className="block h-6 w-36 bg-gray-200 rounded-md relative overflow-hidden">
+                  <span className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-skeleton"></span>
+                </span>
+              ) : (
+                <span className="transition-opacity duration-500 ease-in-out">
+                  {vendorData?.storeName ?? "Store"}
+                </span>
+              )}
             </span>
           </div>
         )}
@@ -205,38 +219,27 @@ export function Sidebar({ userRole, vendorId }: SidebarProps) {
 
       <div className="p-4 border-t border-gray-100 space-y-1">
         {
-          
           <Link href={`/vendor/${vendorId}/help/`}>
-          {/* instead of making help as differnet route "/help" there will be popup component in where
+            {/* instead of making help as differnet route "/help" there will be popup component in where
            user can take quick tour and can contact me/developer as well for better ui/ux  */}
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-start h-10 px-3",
-              collapsed && "px-0 justify-center"
-              
-              
-            )}
-          >
-            <HelpCircle className={cn("h-4 w-4", !collapsed && "mr-3")} />
-            {!collapsed && "Help & Support"}
-          </Button>
-        </Link>}
-        <Button
-          variant="ghost"
-          onClick={() => {
-            setSignoutModal(!signoutModal);
-          }}
-          className={cn(
-            "w-full justify-start h-10 px-3 text-red-600 hover:text-red-700 hover:bg-red-50",
-            collapsed && "px-0 justify-center"
-          )}
-        >
-          <LogOut className={cn("h-4 w-4", !collapsed && "mr-3")} />
-          {!collapsed && "Sign Out"}
-        </Button>
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start h-10 px-3",
+                collapsed && "px-0 justify-center"
+              )}
+            >
+              <HelpCircle className={cn("h-4 w-4", !collapsed && "mr-3")} />
+              {!collapsed && "Help & Support"}
+            </Button>
+          </Link>
+        }
+
+        <SideBarFooter params={vendorId} />
       </div>
-      {signoutModal && <SignoutConfirm open={signoutModal} onOpenChange={setSignoutModal} />}
+      {signoutModal && (
+        <SignoutConfirm open={signoutModal} onOpenChange={setSignoutModal} />
+      )}
     </div>
   );
 }

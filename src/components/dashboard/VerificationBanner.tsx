@@ -44,11 +44,11 @@ export function VerificationBanner({ vendorId, isVerified, vendorName }: Verific
             <div className="flex items-center gap-3 mt-3">
               <Link href="/dashboard/vendor/profile/complete">
                 <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">
-                  Complete Verification
+                  Complete Profile Verification
                 </Button>
               </Link>
 
-              <Link href={`/vendor/${vendorId}/help/`} className="text-xs text-indigo-600 hover:text-indigo-800 underline">
+              <Link href={`/vendor/${vendorId}/help/`} className="text-xs text-indigo-800 hover:text-indigo-800 underline">
                 Learn more
               </Link>
             </div>
