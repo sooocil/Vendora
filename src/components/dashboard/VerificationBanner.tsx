@@ -14,6 +14,7 @@ interface VerificationBannerProps {
 
 export function VerificationBanner({ vendorId, isVerified, vendorName }: VerificationBannerProps) {
   const [isDismissed, setIsDismissed] = useState(false)
+  
 
   if (isVerified || isDismissed) return null
 
@@ -42,7 +43,7 @@ export function VerificationBanner({ vendorId, isVerified, vendorName }: Verific
             </p>
 
             <div className="flex items-center gap-3 mt-3">
-              <Link href="/dashboard/vendor/profile/complete">
+              <Link href={`/vendor/${vendorId}/profile/complete`}>
                 <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">
                   Complete Profile Verification
                 </Button>
