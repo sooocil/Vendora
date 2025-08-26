@@ -34,7 +34,6 @@ export function SideBarFooter({ params }: SideBarFooterProps) {
     staleTime: 1000 * 60 * 30,
   });
   const vendorId = params;
-  console.log("Vendor Data in Sidebar Footer:", vendorData);
 
   if (isLoading) {
     return (
