@@ -15,7 +15,7 @@ import { vendor } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
-// import { getVendorId } from "@/lib/actions/vendor/getVendorId";
+import { signOutVendor } from "@/lib/actions/vendor/signoutAction";
 
 interface SideBarFooterProps {
   params?: string;
@@ -24,18 +24,29 @@ interface SideBarFooterProps {
 export function SideBarFooter({ params }: SideBarFooterProps) {
   const {
     data: vendorData,
-    isLoading,
+    isFetching,
     isError,
   } = useQuery({
     queryKey: ["vendor", params],
     queryFn: () => getVendorByVendorId(params!),
     enabled: !!params,
     select: (res) => res.data as vendor,
-    staleTime: 1000 * 60 * 30,
+    initialData: () => {
+      const cachedData = localStorage.getItem(`vendor_${params}`);
+      return cachedData ? JSON.parse(cachedData) : undefined;
+    },
+    staleTime: 30 * 60 * 1000, 
   });
-  const vendorId = params;
 
-  if (isLoading) {
+  if (vendorData) {
+    localStorage.setItem(`vendor_${params}`, JSON.stringify(vendorData));
+  }
+
+  if (isError) {
+    return <div>Error loading vendor data</div>;
+  }
+
+  if (isFetching && !vendorData) {
     return (
       <div className="w-full">
         <div className="justify-start w-full p-3 h-auto border-2 rounded-lg bg-gradient-to-r from-slate-100 to-slate-50 animate-pulse">
@@ -53,12 +64,8 @@ export function SideBarFooter({ params }: SideBarFooterProps) {
     );
   }
 
-  if (isError) {
-    return <div>Error loading vendor data</div>;
-  }
-
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -68,7 +75,7 @@ export function SideBarFooter({ params }: SideBarFooterProps) {
             <div className="flex items-center space-x-3">
               <Avatar className="h-10 w-10 ring-2 ring-indigo-200">
                 <AvatarImage
-                  // src="/avatars/01.png"
+                  src={vendorData?.profileImage} 
                   alt={vendorData?.storeName}
                 />
                 <AvatarFallback className="bg-indigo-100 text-indigo-600 font-semibold">
@@ -77,12 +84,10 @@ export function SideBarFooter({ params }: SideBarFooterProps) {
               </Avatar>
               <div className="flex flex-col text-left">
                 <span className="text-sm font-semibold text-gray-900">
-                  {isLoading
-                    ? "Loading..."
-                    : vendorData?.storeName ?? "Unknown"}
+                  {vendorData?.storeName ?? "Unknown"}
                 </span>
                 <span className="text-xs text-gray-600 font-medium">
-                  {isError ? "Error loading" : vendorData?.email ?? ""}
+                  {vendorData?.email ?? ""}
                 </span>
               </div>
             </div>
@@ -98,35 +103,47 @@ export function SideBarFooter({ params }: SideBarFooterProps) {
           </DropdownMenuLabel>
           <div className="p-1">
             <DropdownMenuItem
-              onClick={() => {
-                window.location.href = `/vendor/${vendorId}/profile`;
-              }}
-              className=" hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100"
+              asChild
+              className="hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100"
             >
-              <span className="flex items-center gap-2">
+              <Link href={`/vendor/${params}/profile`} className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
                 Profile
-              </span>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100">
-              <span className="flex items-center gap-2">
+            <DropdownMenuItem
+              asChild
+              className="hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100"
+            >
+              <Link href="/notifications" className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
-                <Link href="/notifications">Notifications</Link>
-              </span>
+                Notifications
+              </Link>
             </DropdownMenuItem>
-
-            <DropdownMenuItem className="hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100">
-              <span className="flex items-center gap-2">
+            <DropdownMenuItem
+              asChild
+              className="hover:rounded-none px-3 py-2 cursor-pointer hover:bg-indigo-100 transition-all duration-200 focus:bg-indigo-100"
+            >
+              <Link href="/settings" className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-indigo-600"></div>
-                Setting
-              </span>
+                Settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="my-2 bg-gray-200" />
-            <DropdownMenuItem className="rounded-md px-3 py-2 cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-all duration-200 focus:bg-red-600 font-medium">
-              <span className="flex items-center gap-2">
+            <DropdownMenuItem
+              asChild
+              className="rounded-md px-3 py-2 cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-all duration-200 focus:bg-red-600 font-medium"
+            >
+              <button
+                onClick={async () => {
+                  await signOutVendor(); 
+                  window.location.reload();
+                }}
+                className="flex items-center gap-2 w-full"
+              >
                 <div className="w-2 h-2 rounded-full bg-white/80"></div>
                 Sign out
-              </span>
+              </button>
             </DropdownMenuItem>
           </div>
         </DropdownMenuContent>
