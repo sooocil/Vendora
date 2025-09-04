@@ -7,7 +7,7 @@ export type vendor = {
   storeName?: string;
   citizenshipNo?: string;
   location?: string;
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
   isVerified: boolean;
   profileImage?: string;
   isPaid: boolean;
