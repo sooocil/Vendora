@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,7 +93,10 @@ interface ProfileCompletePageProps {
   children: React.ReactNode;
 }
 
-export default function ProfileCompletePage({ params, children }: ProfileCompletePageProps) {
+export default function ProfileCompletePage({
+  params,
+  children,
+}: ProfileCompletePageProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
@@ -113,19 +116,20 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { vendorId } = React.use(params);
 
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
-  const { data: vendorData, isLoading: isVendorDataLoading } = useQuery<vendor | null>({
-    queryKey: ["vendor", params],
-    queryFn: async () => {
-      const { vendorId } = await params;
-      const response = await getVendorByVendorId(vendorId);
-      return response.data;
-    },
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data: vendorData, isLoading: isVendorDataLoading } =
+    useQuery<vendor | null>({
+      queryKey: ["vendor", vendorId],
+      queryFn: async () => {
+        const response = await getVendorByVendorId(vendorId);
+        return response.data;
+      },
+      staleTime: 5 * 60 * 1000,
+    });
 
   useEffect(() => {
     if (vendorData) {
@@ -143,7 +147,7 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
         city: (vendorData as any).city || "",
         state: (vendorData as any).state || "",
         postalCode: (vendorData as any).postalCode || "",
-        profileImage: null, 
+        profileImage: null,
       }));
     }
   }, [vendorData]);
@@ -152,21 +156,27 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
     const newErrors: Partial<FormData> = {};
 
     if (step === 1) {
-      if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
-      if (!formData.username.trim()) newErrors.username = "Username is required";
+      if (!formData.fullName.trim())
+        newErrors.fullName = "Full name is required";
+      if (!formData.username.trim())
+        newErrors.username = "Username is required";
       if (!formData.email.trim()) newErrors.email = "Email is required";
       if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
     } else if (step === 2) {
-      if (!formData.storeName.trim()) newErrors.storeName = "Store name is required";
+      if (!formData.storeName.trim())
+        newErrors.storeName = "Store name is required";
       if (!formData.storeDescription.trim())
         newErrors.storeDescription = "Store description is required";
-      if (!formData.businessType) newErrors.businessType = "Business type is required";
-      if (!formData.panNumber.trim()) newErrors.panNumber = "PAN number is required";
+      if (!formData.businessType)
+        newErrors.businessType = "Business type is required";
+      if (!formData.panNumber.trim())
+        newErrors.panNumber = "PAN number is required";
     } else if (step === 3) {
       if (!formData.address.trim()) newErrors.address = "Address is required";
       if (!formData.city.trim()) newErrors.city = "City is required";
       if (!formData.state.trim()) newErrors.state = "State is required";
-      if (!formData.postalCode.trim()) newErrors.postalCode = "Postal code is required";
+      if (!formData.postalCode.trim())
+        newErrors.postalCode = "Postal code is required";
     }
 
     setErrors(newErrors);
@@ -237,7 +247,9 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                       <benefit.icon className="h-5 w-5 text-indigo-200" />
                       <div>
                         <p className="font-medium text-sm">{benefit.title}</p>
-                        <p className="text-xs text-indigo-200">{benefit.desc}</p>
+                        <p className="text-xs text-indigo-200">
+                          {benefit.desc}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
@@ -284,9 +296,15 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
               <Card className="border-0 shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-3">
-                    {currentStep === 1 && <User className="h-5 w-5 text-indigo-600" />}
-                    {currentStep === 2 && <Store className="h-5 w-5 text-indigo-600" />}
-                    {currentStep === 3 && <MapPin className="h-5 w-5 text-indigo-600" />}
+                    {currentStep === 1 && (
+                      <User className="h-5 w-5 text-indigo-600" />
+                    )}
+                    {currentStep === 2 && (
+                      <Store className="h-5 w-5 text-indigo-600" />
+                    )}
+                    {currentStep === 3 && (
+                      <MapPin className="h-5 w-5 text-indigo-600" />
+                    )}
                     <div>
                       <CardTitle className="text-lg">
                         {currentStep === 1 && "Personal Information"}
@@ -318,15 +336,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                         <div className="md:col-span-2 space-y-4">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                              <Label htmlFor="fullName" className="text-sm font-medium">
+                              <Label
+                                htmlFor="fullName"
+                                className="text-sm font-medium"
+                              >
                                 Full Name *
                               </Label>
                               <Input
                                 id="fullName"
                                 value={formData.fullName}
-                                onChange={(e) => updateFormData("fullName", e.target.value)}
+                                onChange={(e) =>
+                                  updateFormData("fullName", e.target.value)
+                                }
                                 placeholder="Enter your full name"
-                                className={`h-10 ${errors.fullName ? "border-red-500" : ""}`}
+                                className={`h-10 ${
+                                  errors.fullName ? "border-red-500" : ""
+                                }`}
                               />
                               {errors.fullName && (
                                 <p className="text-xs text-red-500 flex items-center gap-1">
@@ -337,15 +362,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="username" className="text-sm font-medium">
+                              <Label
+                                htmlFor="username"
+                                className="text-sm font-medium"
+                              >
                                 Username *
                               </Label>
                               <Input
                                 id="username"
                                 value={formData.username}
-                                onChange={(e) => updateFormData("username", e.target.value)}
+                                onChange={(e) =>
+                                  updateFormData("username", e.target.value)
+                                }
                                 placeholder="Choose a username"
-                                className={`h-10 ${errors.username ? "border-red-500" : ""}`}
+                                className={`h-10 ${
+                                  errors.username ? "border-red-500" : ""
+                                }`}
                               />
                               {errors.username && (
                                 <p className="text-xs text-red-500 flex items-center gap-1">
@@ -358,7 +390,11 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                              <Label htmlFor="email" className="text-sm font-medium">
+                              <Label
+                                htmlFor="email"
+                                unselectable="on"
+                                className="text-sm font-medium"
+                              >
                                 Email Address *
                               </Label>
                               <div className="relative">
@@ -367,9 +403,13 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                                   id="email"
                                   type="email"
                                   value={formData.email}
-                                  onChange={(e) => updateFormData("email", e.target.value)}
+                                  onChange={(e) =>
+                                    updateFormData("email", e.target.value)
+                                  }
                                   placeholder="your@email.com"
-                                  className={`pl-10 h-10 ${errors.email ? "border-red-500" : ""}`}
+                                  className={`pl-10 h-10 ${
+                                    errors.email ? "border-red-500" : ""
+                                  }`}
                                 />
                               </div>
                               {errors.email && (
@@ -381,7 +421,10 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="phone" className="text-sm font-medium">
+                              <Label
+                                htmlFor="phone"
+                                className="text-sm font-medium"
+                              >
                                 Phone Number *
                               </Label>
                               <div className="relative">
@@ -389,9 +432,13 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                                 <Input
                                   id="phone"
                                   value={formData.phone}
-                                  onChange={(e) => updateFormData("phone", e.target.value)}
+                                  onChange={(e) =>
+                                    updateFormData("phone", e.target.value)
+                                  }
                                   placeholder="+1 (555) 000-0000"
-                                  className={`pl-10 h-10 ${errors.phone ? "border-red-500" : ""}`}
+                                  className={`pl-10 h-10 ${
+                                    errors.phone ? "border-red-500" : ""
+                                  }`}
                                 />
                               </div>
                               {errors.phone && (
@@ -414,15 +461,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                       className="space-y-4"
                     >
                       <div className="space-y-2">
-                        <Label htmlFor="storeName" className="text-sm font-medium">
+                        <Label
+                          htmlFor="storeName"
+                          className="text-sm font-medium"
+                        >
                           Store Name *
                         </Label>
                         <Input
                           id="storeName"
                           value={formData.storeName}
-                          onChange={(e) => updateFormData("storeName", e.target.value)}
+                          onChange={(e) =>
+                            updateFormData("storeName", e.target.value)
+                          }
                           placeholder="Enter your store name"
-                          className={`h-10 ${errors.storeName ? "border-red-500" : ""}`}
+                          className={`h-10 ${
+                            errors.storeName ? "border-red-500" : ""
+                          }`}
                         />
                         {errors.storeName && (
                           <p className="text-xs text-red-500 flex items-center gap-1">
@@ -433,16 +487,23 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="storeDescription" className="text-sm font-medium">
+                        <Label
+                          htmlFor="storeDescription"
+                          className="text-sm font-medium"
+                        >
                           Store Description *
                         </Label>
                         <Textarea
                           id="storeDescription"
                           value={formData.storeDescription}
-                          onChange={(e) => updateFormData("storeDescription", e.target.value)}
+                          onChange={(e) =>
+                            updateFormData("storeDescription", e.target.value)
+                          }
                           placeholder="Describe what your store sells..."
                           rows={3}
-                          className={errors.storeDescription ? "border-red-500" : ""}
+                          className={
+                            errors.storeDescription ? "border-red-500" : ""
+                          }
                         />
                         {errors.storeDescription && (
                           <p className="text-xs text-red-500 flex items-center gap-1">
@@ -454,15 +515,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="businessType" className="text-sm font-medium">
+                          <Label
+                            htmlFor="businessType"
+                            className="text-sm font-medium"
+                          >
                             Business Type *
                           </Label>
                           <Select
                             value={formData.businessType}
-                            onValueChange={(value) => updateFormData("businessType", value)}
+                            onValueChange={(value) =>
+                              updateFormData("businessType", value)
+                            }
                           >
                             <SelectTrigger
-                              className={`h-10 ${errors.businessType ? "border-red-500" : ""}`}
+                              className={`h-10 ${
+                                errors.businessType ? "border-red-500" : ""
+                              }`}
                             >
                               <SelectValue placeholder="Select business type" />
                             </SelectTrigger>
@@ -483,7 +551,10 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="panNumber" className="text-sm font-medium">
+                          <Label
+                            htmlFor="panNumber"
+                            className="text-sm font-medium"
+                          >
                             PAN Number *
                           </Label>
                           <div className="relative">
@@ -492,11 +563,16 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                               id="panNumber"
                               value={formData.panNumber}
                               onChange={(e) =>
-                                updateFormData("panNumber", e.target.value.toUpperCase())
+                                updateFormData(
+                                  "panNumber",
+                                  e.target.value.toUpperCase()
+                                )
                               }
                               placeholder="ABCDE1234F"
                               maxLength={10}
-                              className={`pl-10 h-10 ${errors.panNumber ? "border-red-500" : ""}`}
+                              className={`pl-10 h-10 ${
+                                errors.panNumber ? "border-red-500" : ""
+                              }`}
                             />
                           </div>
                           {errors.panNumber && (
@@ -517,15 +593,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                       className="space-y-4"
                     >
                       <div className="space-y-2">
-                        <Label htmlFor="address" className="text-sm font-medium">
+                        <Label
+                          htmlFor="address"
+                          className="text-sm font-medium"
+                        >
                           Street Address *
                         </Label>
                         <Input
                           id="address"
                           value={formData.address}
-                          onChange={(e) => updateFormData("address", e.target.value)}
+                          onChange={(e) =>
+                            updateFormData("address", e.target.value)
+                          }
                           placeholder="Enter your street address"
-                          className={`h-10 ${errors.address ? "border-red-500" : ""}`}
+                          className={`h-10 ${
+                            errors.address ? "border-red-500" : ""
+                          }`}
                         />
                         {errors.address && (
                           <p className="text-xs text-red-500 flex items-center gap-1">
@@ -543,9 +626,13 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                           <Input
                             id="city"
                             value={formData.city}
-                            onChange={(e) => updateFormData("city", e.target.value)}
+                            onChange={(e) =>
+                              updateFormData("city", e.target.value)
+                            }
                             placeholder="City"
-                            className={`h-10 ${errors.city ? "border-red-500" : ""}`}
+                            className={`h-10 ${
+                              errors.city ? "border-red-500" : ""
+                            }`}
                           />
                           {errors.city && (
                             <p className="text-xs text-red-500 flex items-center gap-1">
@@ -556,12 +643,17 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="state" className="text-sm font-medium">
+                          <Label
+                            htmlFor="state"
+                            className="text-sm font-medium"
+                          >
                             State *
                           </Label>
                           <LocationSelector
                             value={formData.state}
-                            onChange={(value: any) => updateFormData("state", value)}
+                            onChange={(value: any) =>
+                              updateFormData("state", value)
+                            }
                           />
                           {errors.state && (
                             <p className="text-xs text-red-500 flex items-center gap-1">
@@ -572,15 +664,22 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="postalCode" className="text-sm font-medium">
+                          <Label
+                            htmlFor="postalCode"
+                            className="text-sm font-medium"
+                          >
                             Postal Code *
                           </Label>
                           <Input
                             id="postalCode"
                             value={formData.postalCode}
-                            onChange={(e) => updateFormData("postalCode", e.target.value)}
+                            onChange={(e) =>
+                              updateFormData("postalCode", e.target.value)
+                            }
                             placeholder="12345"
-                            className={`h-10 ${errors.postalCode ? "border-red-500" : ""}`}
+                            className={`h-10 ${
+                              errors.postalCode ? "border-red-500" : ""
+                            }`}
                           />
                           {errors.postalCode && (
                             <p className="text-xs text-red-500 flex items-center gap-1">
@@ -599,7 +698,8 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                               Quick Verification
                             </h4>
                             <p className="text-xs text-indigo-700">
-                              Review within 24-48 hours • Email confirmation sent
+                              Review within 24-48 hours • Email confirmation
+                              sent
                             </p>
                           </div>
                         </div>
@@ -629,7 +729,9 @@ export default function ProfileCompletePage({ params, children }: ProfileComplet
                   <div
                     key={i}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i + 1 <= currentStep ? "bg-indigo-600 scale-125" : "bg-gray-300"
+                      i + 1 <= currentStep
+                        ? "bg-indigo-600 scale-125"
+                        : "bg-gray-300"
                     }`}
                   />
                 ))}
